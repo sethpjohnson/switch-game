@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { type CSSProperties, useEffect, useMemo, useState } from 'react'
 import {
   createLevel,
   getLightStates,
@@ -17,6 +17,15 @@ interface ResultMessage {
   body: string
   action: string
 }
+
+const SCREW_ROTATIONS = [
+  -45, 25, 30, -10, 55, -27, 64, 79, -36, 87, 0, -57, 58, -87,
+  -83, -13, 37, 7, -72, -52, -21, -16, -75, 49, 46, 71, -78, -7,
+  19, 16, 83, -62, 13, -68, -41, 68, -48, -31, -65, 61, 10, 42,
+]
+
+const screwStyle = (rotation: number) =>
+  ({ '--screw-rotation': `${rotation}deg` }) as CSSProperties
 
 const SUCCESS_MESSAGES: ResultMessage[] = [
   {
@@ -197,23 +206,32 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
         </div>
 
         <div className="switch-plate" aria-label="Twenty-one switch panel">
-          <span className="plate-screw screw-one" aria-hidden="true" />
-          <span className="plate-screw screw-two" aria-hidden="true" />
           <div className="switch-grid">
             {switches.map((isUp, index) => (
-              <button
-                className={`toggle-switch ${isUp ? 'is-up' : ''}`}
-                aria-label={`Unlabeled switch ${index + 1}`}
-                aria-checked={isUp}
-                role="switch"
-                type="button"
-                key={index}
-                onClick={() => handleToggle(index)}
-              >
-                <span className="switch-well" aria-hidden="true">
-                  <span className="switch-lever" />
-                </span>
-              </button>
+              <div className="switch-gang" key={index}>
+                <span
+                  className="switch-screw switch-screw-top"
+                  style={screwStyle(SCREW_ROTATIONS[index * 2])}
+                  aria-hidden="true"
+                />
+                <button
+                  className={`toggle-switch ${isUp ? 'is-up' : ''}`}
+                  aria-label={`Unlabeled switch ${index + 1}`}
+                  aria-checked={isUp}
+                  role="switch"
+                  type="button"
+                  onClick={() => handleToggle(index)}
+                >
+                  <span className="switch-well" aria-hidden="true">
+                    <span className="switch-lever" />
+                  </span>
+                </button>
+                <span
+                  className="switch-screw switch-screw-bottom"
+                  style={screwStyle(SCREW_ROTATIONS[index * 2 + 1])}
+                  aria-hidden="true"
+                />
+              </div>
             ))}
           </div>
         </div>

@@ -562,74 +562,86 @@
     position: relative;
     width: min(100%, 1500px);
     margin: auto;
-    padding: clamp(1rem, 1.8vw, 1.7rem) clamp(1.6rem, 3vw, 3rem);
-    border: 1px solid #d8d7cc;
-    border-bottom-color: #6e6e67;
-    border-radius: 5px;
-    background:
-      /* repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 5px), */
-      linear-gradient(180deg, #f5f4eb, #a09f96 48%, #b7b6ac 51%, #8e8d89);
+    padding: 7px;
+    border: 1px solid #3b3c37;
+    border-radius: 7px;
+    background: #10110e;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.65),
-      inset 0 -2px 3px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
       0 8px 0 #0e0f0c,
       0 13px 28px rgba(0, 0, 0, 0.38);
   }
 
-  .plate-screw {
-    position: absolute;
-    top: 50%;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #5f605d;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #e2e1d8 0 15%, #7a7b75 52%, #43443f 100%);
-    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
-    transform: translateY(-50%);
-  }
-
-  .plate-screw::after {
-    position: absolute;
-    top: 6px;
-    left: 2px;
-    width: 10px;
-    height: 1px;
-    content: '';
-    background: #40413d;
-    /* transform: rotate(-18deg); */
-  }
-
-  .screw-one { left: 8px; }
-  .screw-two { right: 8px; }
-  .screw-one::after {transform: rotate(23deg); }
-  .screw-two::after {transform: rotate(118deg); }
-
   .switch-grid {
     display: grid;
-    grid-template-columns: repeat(21, minmax(38px, 1fr));
-    gap: clamp(4px, 0.55vw, 11px);
+    grid-template-columns: repeat(21, minmax(40px, 1fr));
+    gap: 0;
+  }
+
+  .switch-gang {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 150px;
+    place-items: center;
+    border-top: 1px solid #dad9cf;
+    border-bottom: 1px solid #6e6e67;
+    /* border-left: 1px solid rgba(67, 68, 63, 0.34); */
+    background:
+      /* linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 24% 76%, rgba(63, 31, 31, 0.1)), */
+      linear-gradient(180deg, #f5f4eb, #7d7c75 48%, #b9b8ae 52%, #8e8d89);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.68),
+      inset 0 -2px 3px rgba(0, 0, 0, 0.28);
+  }
+
+  .switch-gang:first-child { border-radius: 4px 0 0 4px; }
+  .switch-gang:last-child {
+    border-right: 1px solid #85857d;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .switch-screw {
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #62635e;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #efeee6 0 13%, #999a93 48%, #4a4b46 100%);
+    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.62), 0 1px 2px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
+  .switch-screw-top { top: 10px; }
+  .switch-screw-bottom { bottom: 10px; }
+
+  .switch-screw::after {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    width: 7px;
+    height: 1px;
+    content: '';
+    background: #3f403c;
+    transform: rotate(var(--screw-rotation));
+    transform-origin: center;
   }
 
   .toggle-switch {
     position: relative;
     display: grid;
+    width: 100%;
     min-width: 0;
-    min-height: 86px;
+    min-height: 88px;
     place-items: center;
     padding: 5px;
     border-radius: 3px;
     background: transparent;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .toggle-switch::before {
-    position: absolute;
-    inset: 0;
-    content: '';
-    border: 1px solid rgba(45, 46, 43, 0.48);
-    border-radius: 3px;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
   }
 
   .switch-well {
@@ -749,8 +761,17 @@
   }
 
   @media (max-width: 940px) {
-    .switch-plate { width: min(100%, 650px); padding-inline: 2.1rem; }
-    .switch-grid { grid-template-columns: repeat(7, minmax(44px, 1fr)); gap: 8px 14px; }
+    .switch-plate { width: min(100%, 650px); }
+    .switch-grid { grid-template-columns: repeat(7, minmax(44px, 1fr)); gap: 10px 0; }
+    .switch-gang { min-height: 116px; }
+    .switch-gang:first-child,
+    .switch-gang:last-child { border-radius: 0; }
+    .switch-gang:last-child { border-right: 0; }
+    .switch-gang:nth-child(7n + 1) { border-radius: 4px 0 0 4px; }
+    .switch-gang:nth-child(7n) {
+      border-right: 1px solid #85857d;
+      border-radius: 0 4px 4px 0;
+    }
     .toggle-switch { min-height: 76px; }
     .switch-well { height: 63px; }
     .switch-lever { top: 18px; height: 38px; }
@@ -794,8 +815,11 @@
     .instruction-row { align-items: center; }
     .instruction-row h1 { font-size: 2.25rem; }
     .move-counter strong { font-size: 2.1rem; }
-    .switch-grid { gap: 7px; }
-    .switch-plate { padding: 1rem 1.6rem; }
+    .switch-grid { gap: 9px 0; }
+    .switch-plate { padding: 6px; }
+    .switch-gang { min-height: 106px; }
+    .switch-screw-top { top: 8px; }
+    .switch-screw-bottom { bottom: 8px; }
     .toggle-switch { min-height: 69px; padding: 3px; }
     .switch-well { width: 35px; height: 57px; }
     .switch-lever { top: 17px; width: 23px; height: 34px; }
@@ -817,8 +841,18 @@
     .control-zone { padding-inline: 0.65rem; }
     .instruction-row { padding-inline: 0.35rem; }
     .instruction-row h1 { font-size: 2rem; }
-    .switch-plate { padding-inline: 1.2rem; }
-    .switch-grid { gap: 4px; }
+    .switch-plate { padding: 5px; }
+    .switch-grid { gap: 8px 0; }
+    .switch-gang { min-height: 100px; }
+    .switch-screw {
+      width: 10px;
+      height: 10px;
+    }
+    .switch-screw::after {
+      top: 4px;
+      left: 1px;
+      width: 6px;
+    }
     .toggle-switch { min-height: 64px; }
     .switch-well { width: 32px; height: 53px; }
     .switch-lever { top: 16px; width: 21px; height: 32px; }

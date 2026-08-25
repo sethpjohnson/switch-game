@@ -57,6 +57,23 @@ describe('Switch Game', () => {
     expect(screen.queryByText(/switch 1/i)).not.toBeInTheDocument()
   })
 
+  it('keeps 42 nonuniform screw heads fixed between levels', () => {
+    const { container } = render(<GameSession initialLevel={oneSwitchPuzzle} />)
+    const getScrewRotations = () =>
+      [...container.querySelectorAll<HTMLElement>('.switch-screw')].map((screw) =>
+        screw.style.getPropertyValue('--screw-rotation'),
+      )
+
+    const firstLevelRotations = getScrewRotations()
+    expect(firstLevelRotations).toHaveLength(42)
+    expect(new Set(firstLevelRotations)).toHaveLength(42)
+
+    fireEvent.click(screen.getAllByRole('switch')[0])
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button'))
+
+    expect(getScrewRotations()).toEqual(firstLevelRotations)
+  })
+
   it('randomizes the success card while celebrating a completed shift', () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
     const firstRound = render(<GameSession initialLevel={oneSwitchPuzzle} />)
