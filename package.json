@@ -6,6 +6,7 @@
   "packageManager": "pnpm@9.15.3",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node --eval \"const { rmSync } = require('node:fs'); for (const path of ['dist', 'vite.config.js', 'vite.config.d.ts', 'tsconfig.app.tsbuildinfo', 'tsconfig.node.tsbuildinfo']) rmSync(path, { recursive: true, force: true })\"",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",

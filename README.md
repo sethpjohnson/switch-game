@@ -18,7 +18,11 @@ pnpm build
 
 ## Cloudflare Workers
 
-The project uses Wrangler static assets with SPA fallback. After authenticating Wrangler:
+The game deploys as the independent `hometech-fun-21-switch-game` Worker at:
+
+`https://www.hometech.fm/fun/21-switch-game/`
+
+The main HomeTech.fm website does not build or serve the game. Cloudflare routes only this path to the game Worker. After authenticating Wrangler:
 
 ```bash
 pnpm deploy
