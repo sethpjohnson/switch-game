@@ -31,7 +31,7 @@ describe('Switch Game', () => {
   it('introduces the restaurant crisis and starts a 21-switch shift', () => {
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: /hotdog stand.*the game/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /hot dog stand.*the game/i })).toBeInTheDocument()
     expect(screen.getByText(/21 unlabeled switches/i)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /clock in/i }))

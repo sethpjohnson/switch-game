@@ -133,7 +133,7 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
         <div className="brand-lockup">
           <div>
             {/* <small>OPENING CONTROL</small> */}
-            <strong>HOTDOG STAND – THE GAME</strong>
+            <strong>HOT DOG STAND – THE GAME</strong>
           </div>
         </div>
         <div className="level-readout">
@@ -262,7 +262,7 @@ function App() {
         <div className="intro-kicker">
         </div>
         <p className="eyebrow">A HOMETECH.FM EMERGENCY</p>
-        <h1 id="game-title">HOTDOG STAND – THE GAME</h1>
+        <h1 id="game-title">HOT DOG STAND – THE GAME</h1>
         <p className="intro-copy">
           21 unlabeled switches. One electrician who stopped answering his phone. Find the
           combination, get the all the lights on, before the first customer arrives.
@@ -281,7 +281,7 @@ function App() {
             ← Head back to HomeTech.fm
           </div>
         </a>
-        <p className="fine-print">Inspired by <a href="https://www.reddit.com/r/electricians/comments/1vrpfw5/21_gang/" target="_blank" rel="noopener noreferrer">Reddit</a> • Powered by Hotdogs 🌭</p>
+        <p className="fine-print">Inspired by <a href="https://www.reddit.com/r/electricians/comments/1vrpfw5/21_gang/" target="_blank" rel="noopener noreferrer">Reddit</a> • Powered by hot dogs 🌭</p>
 
       </section>
     </main>
