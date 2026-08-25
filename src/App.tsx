@@ -27,7 +27,7 @@ const SUCCESS_MESSAGES: ResultMessage[] = [
   },
   {
     eyebrow: (moves) => `CRISIS AVERTED IN ${moves} FLIPS`,
-    title: 'WIENER HALL HAS POWER.',
+    title: 'WIENER, WIENER HOT DOG DINNER.',
     body: 'The lights are on. Nobody ask who wired them.',
     action: 'TAKE ANOTHER SHIFT',
   },
@@ -45,7 +45,7 @@ const SUCCESS_MESSAGES: ResultMessage[] = [
   },
   {
     eyebrow: (moves) => `SHIFT SAVED IN ${moves} FLIPS`,
-    title: 'WE HAVE A WIENER.',
+    title: 'WE HAVE A WIENER!',
     body: 'The restaurant is glowing. The dogs are hot.',
     action: 'SERVE ANOTHER',
   },
@@ -54,33 +54,33 @@ const SUCCESS_MESSAGES: ResultMessage[] = [
 const FAILURE_MESSAGES: ResultMessage[] = [
   {
     eyebrow: () => 'CATASTROPHIC GLIZZY OUTAGE',
-    title: "FRANKLY, WE'RE COOKED.",
-    body: "We're all trying to find the guy who wired this.",
+    title: "FRANKLY, YOU'RE COOKED.",
+    body: "All that work and no glizzies to guzzle.",
     action: 'BLAME THE ELECTRICIAN',
   },
   {
     eyebrow: () => 'AN ENTIRELY NORMAL ELECTRICAL EVENT',
     title: "WE'RE ALL TRYING TO FIND THE GUY WHO WIRED THIS.",
-    body: 'The electrician was last seen near a hot dog-shaped car.',
+    body: 'The electrician was last seen buying a boat with all the profit he made selling these switches.',
     action: 'START THE INVESTIGATION',
   },
   {
     eyebrow: () => 'TUBE-MEAT SYSTEMS OFFLINE',
     title: 'GLIZZY BROWNOUT',
-    body: 'Insufficient voltage for tube-meat operations.',
+    body: 'Insufficient voltage for guzzling.',
     action: 'REBOOT THE STAND',
   },
   {
     eyebrow: () => 'INCIDENT AUTOMATICALLY ESCALATED',
     title: 'CORPORATE HAS BEEN NOTIFIED.',
     body: 'Please remain available for a mandatory Teams call about the glizzy outage.',
-    action: 'REOPEN THE TICKET',
+    action: 'START A NEW SHIFT',
   },
   {
-    eyebrow: () => 'LUNCH SERVICE TERMINATED',
+    eyebrow: () => 'LUNCH IS CANCELED',
     title: 'THE DOGS HAVE GONE COLD.',
-    body: 'No lights. No lunch. No dignity.',
-    action: 'RUN IT BACK',
+    body: 'No lights. No lunch. No hot-diggity-dog.',
+    action: 'TRY AGAIN TOMORROW',
   },
 ]
 
@@ -118,7 +118,7 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
     setSecondsRemaining(replacement.timeLimitSeconds)
   }
 
-  const resetLevel = () => resetBoard(createLevel(level.levelNumber))
+  const resetGame = () => resetBoard(createLevel(1))
   const advanceLevel = () => resetBoard(createLevel(level.levelNumber + 1))
 
   const handleToggle = (switchIndex: number) => {
@@ -231,7 +231,7 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
           <p className="eyebrow">{resultMessages.failure.eyebrow(moves)}</p>
           <h2>{resultMessages.failure.title}</h2>
           <p>{resultMessages.failure.body}</p>
-          <button type="button" onClick={resetLevel}>{resultMessages.failure.action}</button>
+          <button type="button" onClick={resetGame}>{resultMessages.failure.action}</button>
         </section>
       )}
     </main>

@@ -13,6 +13,14 @@ const oneSwitchPuzzle: PuzzleLevel = {
   solution: [true, ...Array<boolean>(20).fill(false)],
 }
 
+const threeLightPuzzle: PuzzleLevel = {
+  ...oneSwitchPuzzle,
+  levelNumber: 3,
+  lightCount: 3,
+  wiring: Array.from({ length: 3 }, () => [...oneSwitchPuzzle.wiring[0]]),
+  polarity: Array<boolean>(3).fill(false),
+}
+
 describe('Switch Game', () => {
   afterEach(() => {
     cleanup()
@@ -69,15 +77,24 @@ describe('Switch Game', () => {
     expect(screen.getByRole('button', { name: /serve another/i })).toBeInTheDocument()
   })
 
-  it('randomizes the failure card when the countdown reaches zero', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0.999)
+  it('resets the game to a newly wired level one after failure', () => {
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0.999)
     vi.useFakeTimers()
-    render(<GameSession initialLevel={oneSwitchPuzzle} />)
+    render(<GameSession initialLevel={threeLightPuzzle} />)
 
+    expect(screen.getByText(/level 03/i)).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(10_000))
 
     expect(screen.getByRole('heading', { name: /the dogs have gone cold/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /run it back/i })).toBeInTheDocument()
+    const restartButton = screen.getByRole('button', { name: /try again tomorrow/i })
+
+    random.mockRestore()
+    fireEvent.click(restartButton)
+
+    expect(screen.getByText(/level 01/i)).toBeInTheDocument()
+    expect(screen.getAllByLabelText(/dining room light/i)).toHaveLength(1)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(screen.getAllByRole('switch').every((control) => control.getAttribute('aria-checked') === 'false')).toBe(true)
   })
 
   it('advances to a harder randomized level after a win', () => {
