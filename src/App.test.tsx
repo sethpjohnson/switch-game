@@ -77,6 +77,24 @@ describe('Switch Game', () => {
     expect(screen.getByRole('button', { name: /serve another/i })).toBeInTheDocument()
   })
 
+  it('turns the timer red only below 30 seconds', () => {
+    vi.useFakeTimers()
+    render(
+      <GameSession
+        initialLevel={{ ...oneSwitchPuzzle, timeLimitSeconds: 31 }}
+      />,
+    )
+
+    const timer = screen.getByLabelText(/31 seconds remaining/i)
+    expect(timer).not.toHaveClass('is-low-time')
+
+    act(() => vi.advanceTimersByTime(1_000))
+    expect(screen.getByLabelText(/30 seconds remaining/i)).not.toHaveClass('is-low-time')
+
+    act(() => vi.advanceTimersByTime(1_000))
+    expect(screen.getByLabelText(/29 seconds remaining/i)).toHaveClass('is-low-time')
+  })
+
   it('resets the game to a newly wired level one after failure', () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0.999)
     vi.useFakeTimers()

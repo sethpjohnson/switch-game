@@ -140,7 +140,10 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
           <small>CURRENT CRISIS</small>
           <strong>LEVEL {String(level.levelNumber).padStart(2, '0')}</strong>
         </div>
-        <div className="timer-readout" aria-label={`${secondsRemaining} seconds remaining`}>
+        <div
+          className={`timer-readout ${secondsRemaining < 30 ? 'is-low-time' : ''}`}
+          aria-label={`${secondsRemaining} seconds remaining`}
+        >
           <small>DOORS OPEN IN</small>
           <strong>
             {String(Math.floor(secondsRemaining / 60)).padStart(2, '0')}:

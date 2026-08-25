@@ -296,6 +296,11 @@
     background: rgba(242, 183, 5, 0.04);
   }
 
+  .timer-readout.is-low-time {
+    color: var(--red);
+    background: rgb(255 0 0 / 0.06);
+  }
+
   .timer-readout strong {
     display: block;
     margin-top: 0.12rem;
