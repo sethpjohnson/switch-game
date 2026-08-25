@@ -11,12 +11,95 @@ interface GameSessionProps {
   initialLevel?: PuzzleLevel
 }
 
+interface ResultMessage {
+  eyebrow: (moves: number) => string
+  title: string
+  body: string
+  action: string
+}
+
+const SUCCESS_MESSAGES: ResultMessage[] = [
+  {
+    eyebrow: (moves) => `FULL WIENER POWER IN ${moves} FLIPS`,
+    title: 'FRANKLY, YOU COOKED.',
+    body: 'Every light is on. The glizzies may now flow.',
+    action: 'KEEP COOKING',
+  },
+  {
+    eyebrow: (moves) => `CRISIS AVERTED IN ${moves} FLIPS`,
+    title: 'WIENER HALL HAS POWER.',
+    body: 'The lights are on. Nobody ask who wired them.',
+    action: 'TAKE ANOTHER SHIFT',
+  },
+  {
+    eyebrow: () => 'ALL CIRCUITS HOT',
+    title: 'GLIZZY OVERDRIVE',
+    body: 'All circuits hot. All buns ready.',
+    action: 'MORE POWER',
+  },
+  {
+    eyebrow: () => 'INCIDENT RESOLVED',
+    title: 'CORPORATE WILL NEVER KNOW.',
+    body: 'The lights are on and the incident report has been deleted.',
+    action: 'NEXT COVER-UP',
+  },
+  {
+    eyebrow: (moves) => `SHIFT SAVED IN ${moves} FLIPS`,
+    title: 'WE HAVE A WIENER.',
+    body: 'The restaurant is glowing. The dogs are hot.',
+    action: 'SERVE ANOTHER',
+  },
+]
+
+const FAILURE_MESSAGES: ResultMessage[] = [
+  {
+    eyebrow: () => 'CATASTROPHIC GLIZZY OUTAGE',
+    title: "FRANKLY, WE'RE COOKED.",
+    body: "We're all trying to find the guy who wired this.",
+    action: 'BLAME THE ELECTRICIAN',
+  },
+  {
+    eyebrow: () => 'AN ENTIRELY NORMAL ELECTRICAL EVENT',
+    title: "WE'RE ALL TRYING TO FIND THE GUY WHO WIRED THIS.",
+    body: 'The electrician was last seen near a hot dog-shaped car.',
+    action: 'START THE INVESTIGATION',
+  },
+  {
+    eyebrow: () => 'TUBE-MEAT SYSTEMS OFFLINE',
+    title: 'GLIZZY BROWNOUT',
+    body: 'Insufficient voltage for tube-meat operations.',
+    action: 'REBOOT THE STAND',
+  },
+  {
+    eyebrow: () => 'INCIDENT AUTOMATICALLY ESCALATED',
+    title: 'CORPORATE HAS BEEN NOTIFIED.',
+    body: 'Please remain available for a mandatory Teams call about the glizzy outage.',
+    action: 'REOPEN THE TICKET',
+  },
+  {
+    eyebrow: () => 'LUNCH SERVICE TERMINATED',
+    title: 'THE DOGS HAVE GONE COLD.',
+    body: 'No lights. No lunch. No dignity.',
+    action: 'RUN IT BACK',
+  },
+]
+
+const pickRandomMessage = (messages: ResultMessage[]) =>
+  messages[Math.floor(Math.random() * messages.length)]
+
 export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps) {
   const [level, setLevel] = useState(initialLevel)
   const [switches, setSwitches] = useState(() => Array<boolean>(SWITCH_COUNT).fill(false))
   const [moves, setMoves] = useState(0)
   const [secondsRemaining, setSecondsRemaining] = useState(level.timeLimitSeconds)
   const lights = useMemo(() => getLightStates(level, switches), [level, switches])
+  const resultMessages = useMemo(
+    () => ({
+      success: pickRandomMessage(SUCCESS_MESSAGES),
+      failure: pickRandomMessage(FAILURE_MESSAGES),
+    }),
+    [level],
+  )
   const hasWon = lights.every(Boolean)
   const hasFailed = secondsRemaining === 0 && !hasWon
 
@@ -49,8 +132,8 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
       <header className="game-header">
         <div className="brand-lockup">
           <div>
-            <small>OPENING CONTROL</small>
-            <strong>OPEN THE DAMN RESTAURANT.</strong>
+            {/* <small>OPENING CONTROL</small> */}
+            <strong>HOTDOG STAND – THE GAME</strong>
           </div>
         </div>
         <div className="level-readout">
@@ -68,6 +151,9 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
 
       <section className="restaurant-stage" aria-label="Dark restaurant dining room">
         <div className="ceiling-line" aria-hidden="true" />
+        <div className="wall-art" role="img" aria-label="Framed hot dog artwork">
+          <span aria-hidden="true">🌭</span>
+        </div>
         <div className="pendant-row">
           {lights.map((isLit, index) => (
             <div
@@ -134,18 +220,18 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
 
       {hasWon && (
         <section className="result-card" role="dialog" aria-modal="true">
-          <p className="eyebrow">SHIFT SAVED IN {moves} FLIPS</p>
-          <h2>DOORS UNLOCKED.</h2>
-          <p>The dining room is glowing and nobody needs to call corporate.</p>
-          <button type="button" onClick={advanceLevel}>NEXT DISASTER</button>
+          <p className="eyebrow">{resultMessages.success.eyebrow(moves)}</p>
+          <h2>{resultMessages.success.title}</h2>
+          <p>{resultMessages.success.body}</p>
+          <button type="button" onClick={advanceLevel}>{resultMessages.success.action}</button>
         </section>
       )}
       {hasFailed && (
         <section className="result-card failure-card" role="dialog" aria-modal="true">
-          <p className="eyebrow">CUSTOMERS AT THE DOOR</p>
-          <h2>SHIFT BLOWN.</h2>
-          <p>The dining room is dark. The Google reviews are already being drafted.</p>
-          <button type="button" onClick={resetLevel}>REWIRE AND RETRY</button>
+          <p className="eyebrow">{resultMessages.failure.eyebrow(moves)}</p>
+          <h2>{resultMessages.failure.title}</h2>
+          <p>{resultMessages.failure.body}</p>
+          <button type="button" onClick={resetLevel}>{resultMessages.failure.action}</button>
         </section>
       )}
     </main>
@@ -163,15 +249,15 @@ function App() {
         <div className="intro-kicker">
         </div>
         <p className="eyebrow">A HOMETECH.FM EMERGENCY</p>
-        <h1 id="game-title">OPEN THE DAMN RESTAURANT.</h1>
+        <h1 id="game-title">HOTDOG STAND – THE GAME</h1>
         <p className="intro-copy">
           21 unlabeled switches. One electrician who stopped answering his phone. Find the
-          combination, get the lights on, and unlock the doors before the first customer arrives.
+          combination, get the all the lights on, before the first customer arrives.
         </p>
         <div className="briefing">
           <span>01</span><p>Flip the switches.</p>
           <span>02</span><p>Light up the restaurant.</p>
-          <span>03</span><p>Keep your job.</p>
+          <span>03</span><p>Keep your glizzy job.</p>
         </div>
         <button className="start-button" type="button" onClick={() => setHasStarted(true)}>
           <span>CLOCK IN</span>

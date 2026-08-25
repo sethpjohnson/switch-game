@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import App, { GameSession } from './App'
 import type { PuzzleLevel } from './game/engine'
@@ -17,18 +17,25 @@ describe('Switch Game', () => {
   afterEach(() => {
     cleanup()
     vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
   it('introduces the restaurant crisis and starts a 21-switch shift', () => {
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: /open the damn restaurant/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /hotdog stand.*the game/i })).toBeInTheDocument()
     expect(screen.getByText(/21 unlabeled switches/i)).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /clock in/i }))
 
     expect(screen.getByText(/level 01/i)).toBeInTheDocument()
     expect(screen.getAllByRole('switch')).toHaveLength(21)
+  })
+
+  it('hangs framed hot dog artwork on the restaurant wall', () => {
+    render(<GameSession initialLevel={oneSwitchPuzzle} />)
+
+    expect(screen.getByRole('img', { name: /framed hot dog artwork/i })).toBeInTheDocument()
   })
 
   it('toggles an unlabeled physical switch without revealing its wiring', () => {
@@ -42,34 +49,46 @@ describe('Switch Game', () => {
     expect(screen.queryByText(/switch 1/i)).not.toBeInTheDocument()
   })
 
-  it('celebrates when every required light is on', () => {
-    render(<GameSession initialLevel={oneSwitchPuzzle} />)
+  it('randomizes the success card while celebrating a completed shift', () => {
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+    const firstRound = render(<GameSession initialLevel={oneSwitchPuzzle} />)
 
     expect(screen.getByLabelText(/dining room light 1/i)).toHaveAttribute('data-lit', 'false')
     fireEvent.click(screen.getAllByRole('switch')[0])
 
-    expect(screen.getByRole('heading', { name: /doors unlocked/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /frankly, you cooked/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /keep cooking/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/dining room light 1/i)).toHaveAttribute('data-lit', 'true')
+
+    firstRound.unmount()
+    random.mockReturnValue(0.999)
+    render(<GameSession initialLevel={oneSwitchPuzzle} />)
+    fireEvent.click(screen.getAllByRole('switch')[0])
+
+    expect(screen.getByRole('heading', { name: /we have a wiener/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /serve another/i })).toBeInTheDocument()
   })
 
-  it('ends the shift when the countdown reaches zero', () => {
+  it('randomizes the failure card when the countdown reaches zero', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.999)
     vi.useFakeTimers()
     render(<GameSession initialLevel={oneSwitchPuzzle} />)
 
     act(() => vi.advanceTimersByTime(10_000))
 
-    expect(screen.getByRole('heading', { name: /shift blown/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /rewire and retry/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /the dogs have gone cold/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /run it back/i })).toBeInTheDocument()
   })
 
   it('advances to a harder randomized level after a win', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
     render(<GameSession initialLevel={oneSwitchPuzzle} />)
 
     fireEvent.click(screen.getAllByRole('switch')[0])
-    fireEvent.click(screen.getByRole('button', { name: /next disaster/i }))
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button'))
 
     expect(screen.getByText(/level 02/i)).toBeInTheDocument()
     expect(screen.getAllByLabelText(/dining room light/i)).toHaveLength(2)
-    expect(screen.queryByRole('heading', { name: /doors unlocked/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 })

@@ -11,14 +11,25 @@
   :root {
     --ink: #171914;
     --ink-soft: #242720;
+    --white: #ffffff;
     --cream: #f2ead8;
+    --cream-rgb: 242 234 216;
     --paper: #ded4bd;
-    --yellow: #f2b705;
+    --yellow: #ffff00;
     --orange: #e65322;
-    --red: #c83b25;
+    --red: #ff0000;
     --green: #a9bd72;
     --steel: #bab9ae;
-    --line: rgba(242, 234, 216, 0.18);
+    /* cream hairlines, faintest to brightest */
+    --line-ghost: rgb(var(--cream-rgb) / 0.035);
+    --line: rgb(var(--cream-rgb) / 0.18);
+    --line-strong: rgb(var(--cream-rgb) / 0.28);
+    --line-bright: rgb(var(--cream-rgb) / 0.35);
+    /* cream text tints, faintest to strongest */
+    --text-ghost: rgb(var(--cream-rgb) / 0.32);
+    --text-faint: rgb(var(--cream-rgb) / 0.42);
+    --text-subtle: rgb(var(--cream-rgb) / 0.5);
+    --text-muted: rgb(var(--cream-rgb) / 0.68);
     --display: 'Barlow Condensed', Impact, sans-serif;
     --mono: 'IBM Plex Mono', ui-monospace, monospace;
   }
@@ -29,7 +40,7 @@
     min-width: 320px;
     min-height: 100vh;
     overflow-x: hidden;
-    color: var(--cream);
+    color: var(--white);
     background: var(--ink);
     font-family: var(--mono);
     -webkit-font-smoothing: antialiased;
@@ -78,7 +89,7 @@
     padding: clamp(1.2rem, 4vw, 4rem);
     background:
       linear-gradient(90deg, transparent 0 69%, rgba(242, 183, 5, 0.92) 69% 71%, transparent 71%),
-      repeating-linear-gradient(0deg, transparent 0 47px, rgba(242, 234, 216, 0.035) 48px),
+      repeating-linear-gradient(0deg, transparent 0 47px, var(--line-ghost) 48px),
       var(--ink);
   }
 
@@ -114,7 +125,7 @@
     width: min(100%, 880px);
     margin-right: min(16vw, 13rem);
     padding: clamp(1.5rem, 3vw, 3rem);
-    border: 1px solid rgba(242, 234, 216, 0.28);
+    border: 1px solid var(--line-strong);
     background: rgba(23, 25, 20, 0.94);
     box-shadow: 18px 18px 0 rgba(0, 0, 0, 0.25);
   }
@@ -125,7 +136,7 @@
     width: 8px;
     height: 8px;
     content: '';
-    border: 1px solid rgba(242, 234, 216, 0.35);
+    border: 1px solid var(--line-bright);
     border-radius: 50%;
   }
 
@@ -137,7 +148,7 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: clamp(2rem, 4vw, 3rem);
-    color: rgba(242, 234, 216, 0.66);
+    color: var(--white);
     font-size: 0.66rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -156,7 +167,7 @@
 
   .intro-copy {
     max-width: 62ch;
-    color: rgba(242, 234, 216, 0.73);
+    color: var(--white);
     font-size: clamp(0.78rem, 1.4vw, 0.95rem);
     line-height: 1.75;
   }
@@ -174,7 +185,7 @@
   }
 
   .briefing span { color: var(--yellow); }
-  .briefing p { color: rgba(242, 234, 216, 0.78); }
+  .briefing p { color: var(--white); }
 
   .start-button,
   .result-card button {
@@ -190,15 +201,15 @@
     font-size: 0.74rem;
     font-weight: 600;
     letter-spacing: 0.12em;
-    box-shadow: 6px 6px 0 var(--orange);
+    box-shadow: 6px 6px 0 var(--red);
     transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
   }
 
   .start-button:hover,
   .result-card button:hover {
-    background: #ffd037;
+    background: var(--white);
     transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0 var(--orange);
+    box-shadow: 4px 4px 0 var(--red);
   }
 
   .start-button:active,
@@ -210,7 +221,7 @@
   .intro-warning {
     display: block;
     margin-top: 1.25rem;
-    color: rgba(242, 234, 216, 0.4);
+    color: var(--text-faint);
     font-size: 0.59rem;
     letter-spacing: 0.16em;
   }
@@ -258,7 +269,7 @@
   .brand-lockup small,
   .level-readout small,
   .timer-readout small {
-    color: rgba(242, 234, 216, 0.42);
+    color: var(--text-faint);
     font-size: 0.55rem;
     letter-spacing: 0.14em;
   }
@@ -299,7 +310,7 @@
     position: relative;
     height: clamp(275px, 37vh, 410px);
     overflow: hidden;
-    border-bottom: 1px solid rgba(242, 234, 216, 0.15);
+    border-bottom: 1px solid var(--line);
     background:
       linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 50%),
       #20231d;
@@ -323,7 +334,52 @@
     left: 3%;
     width: 94%;
     height: 7px;
-    border-block: 1px solid rgba(242, 234, 216, 0.15);
+    border-block: 1px solid var(--line);
+  }
+
+  .wall-art {
+    position: absolute;
+    top: 34%;
+    right: clamp(1.5rem, 7vw, 7.5rem);
+    z-index: 0;
+    display: grid;
+    width: clamp(84px, 8vw, 118px);
+    aspect-ratio: 4 / 3;
+    place-items: center;
+    border: 5px solid #674124;
+    outline: 2px solid #10120e;
+    background: #d9cba9;
+    box-shadow:
+      inset 0 0 0 3px #b8834d,
+      inset 0 0 0 9px #eee3c7,
+      0 7px 10px rgba(0, 0, 0, 0.46);
+    filter: brightness(0.72) saturate(0.82);
+    pointer-events: none;
+    transform: rotate(1.5deg);
+    transition: filter 260ms ease, box-shadow 260ms ease;
+  }
+
+  .wall-art::before {
+    position: absolute;
+    inset: 9px;
+    content: '';
+    border: 1px solid rgba(67, 47, 28, 0.28);
+  }
+
+  .wall-art span {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(2.15rem, 3.8vw, 3.45rem);
+    line-height: 1;
+    transform: rotate(-7deg);
+  }
+
+  .game-shell.is-won .wall-art {
+    filter: brightness(1) saturate(1);
+    box-shadow:
+      inset 0 0 0 3px #b8834d,
+      inset 0 0 0 9px #fff4d7,
+      0 7px 18px rgba(255, 212, 111, 0.2);
   }
 
   .pendant-row {
@@ -463,7 +519,7 @@
 
   .stage-copy p {
     margin-top: 0.55rem;
-    color: rgba(242, 234, 216, 0.5);
+    color: var(--text-subtle);
     font-size: 0.62rem;
   }
 
@@ -495,7 +551,7 @@
   .move-counter { text-align: right; }
   .move-counter small {
     display: block;
-    color: rgba(242, 234, 216, 0.42);
+    color: var(--text-faint);
     font-size: 0.55rem;
     letter-spacing: 0.15em;
   }
@@ -516,8 +572,8 @@
     border-bottom-color: #6e6e67;
     border-radius: 5px;
     background:
-      repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 5px),
-      linear-gradient(180deg, #c9c8bd, #a09f96 48%, #b7b6ac 51%, #8e8d85);
+      /* repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 5px), */
+      linear-gradient(180deg, #f5f4eb, #a09f96 48%, #b7b6ac 51%, #8e8d89);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.65),
       inset 0 -2px 3px rgba(0, 0, 0, 0.35),
@@ -545,11 +601,13 @@
     height: 1px;
     content: '';
     background: #40413d;
-    transform: rotate(-18deg);
+    /* transform: rotate(-18deg); */
   }
 
   .screw-one { left: 8px; }
   .screw-two { right: 8px; }
+  .screw-one::after {transform: rotate(23deg); }
+  .screw-two::after {transform: rotate(118deg); }
 
   .switch-grid {
     display: grid;
@@ -632,7 +690,7 @@
 
   .fine-print {
     margin-top: 1.15rem;
-    color: rgba(242, 234, 216, 0.32);
+    color: var(--text-ghost);
     font-size: 0.52rem;
     letter-spacing: 0.16em;
     text-align: center;
@@ -645,7 +703,7 @@
     z-index: 20;
     width: min(calc(100% - 2rem), 520px);
     padding: clamp(1.7rem, 5vw, 3.2rem);
-    border: 1px solid rgba(242, 234, 216, 0.25);
+    border: 1px solid var(--line-strong);
     background: #181a15;
     box-shadow: 0 0 0 100vmax rgba(8, 9, 7, 0.82), 14px 14px 0 var(--green);
     transform: translate(-50%, -50%);
@@ -662,7 +720,7 @@
   }
 
   .result-card > p:not(.eyebrow) {
-    color: rgba(242, 234, 216, 0.68);
+    color: var(--text-muted);
     font-size: 0.78rem;
     line-height: 1.65;
   }
@@ -670,8 +728,9 @@
   .result-card button { margin-top: 1.6rem; }
 
   .failure-card { box-shadow: 0 0 0 100vmax rgba(8, 9, 7, 0.86), 14px 14px 0 var(--red); }
-  .failure-card .eyebrow { color: #f07859; }
-  .failure-card button { color: var(--cream); background: var(--red); box-shadow: 6px 6px 0 #6c2115; }
+  .failure-card .eyebrow { color: var(--red); }
+  .failure-card button { color: var(--white); background: var(--red); box-shadow: 6px 6px 0 var(--yellow); }
+  .failure-card:hover button { color: black; background: var(--yellow); box-shadow: 6px 6px 0 var(--red); }
 
   @keyframes status-pulse {
     50% { opacity: 0.42; }
@@ -724,6 +783,13 @@
     .timer-readout strong { font-size: 1.7rem; }
 
     .restaurant-stage { height: 310px; }
+    .wall-art {
+      top: 37%;
+      right: 1rem;
+      width: 76px;
+      border-width: 4px;
+    }
+    .wall-art span { font-size: 2.1rem; }
     .pendant-row { right: 2%; left: 2%; }
     .pendant { width: 15vw; }
     .stage-copy { right: 1rem; bottom: 0.8rem; }
