@@ -88,8 +88,8 @@
     overflow: hidden;
     padding: clamp(1.2rem, 4vw, 4rem);
     background:
-      linear-gradient(90deg, transparent 0 69%, rgba(242, 183, 5, 0.92) 69% 71%, transparent 71%),
-      repeating-linear-gradient(0deg, transparent 0 47px, var(--line-ghost) 48px),
+      linear-gradient(90deg, transparent 0 69%, var(--yellow) 69% 71%, transparent 71%),
+      repeating-linear-gradient(0deg, transparent 0 47px, var(--line-bright) 48px),
       var(--ink);
   }
 
@@ -102,21 +102,6 @@
     background-image: radial-gradient(rgba(255, 255, 255, 0.09) 0.7px, transparent 0.7px);
     background-size: 7px 7px;
     mask-image: linear-gradient(90deg, #000, transparent 74%);
-  }
-
-  .intro-shell::after {
-    position: absolute;
-    right: clamp(-8rem, -5vw, -2rem);
-    bottom: -12rem;
-    width: min(42vw, 36rem);
-    aspect-ratio: 1;
-    content: '21';
-    color: rgba(23, 25, 20, 0.22);
-    font-family: var(--display);
-    font-size: min(46vw, 34rem);
-    font-weight: 900;
-    line-height: 0.78;
-    transform: rotate(-8deg);
   }
 
   .intro-card {
@@ -224,6 +209,11 @@
     color: var(--text-faint);
     font-size: 0.59rem;
     letter-spacing: 0.16em;
+  }
+
+  .back-link {
+    margin-top: 1.5rem;
+    color: var(--text-subtle);
   }
 
   .game-shell {
@@ -488,7 +478,7 @@
   .table::after { right: 13%; transform: rotate(-4deg); }
   .table-left { left: 12%; }
   .table-center { left: 42%; }
-  .table-right { right: 12%; }
+  .table-right { right: 12%; z-index: 5;}
 
   .booth {
     position: absolute;

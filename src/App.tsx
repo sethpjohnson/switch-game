@@ -218,7 +218,7 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
           </div>
         </div>
 
-      <p  className="fine-print">Inspired by Reddit • Powered by HomeTech.fm</p>
+      <p  className="fine-print">Inspired by <a href="https://www.reddit.com/r/electricians/comments/1vrpfw5/21_gang/" target="_blank" rel="noopener noreferrer">Reddit</a> • Powered by HomeTech.fm</p>
       </section>
 
       {hasWon && (
@@ -227,6 +227,11 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
           <h2>{resultMessages.success.title}</h2>
           <p>{resultMessages.success.body}</p>
           <button type="button" onClick={advanceLevel}>{resultMessages.success.action}</button>
+          <a href="/" rel="noopener noreferrer">
+            <div className="back-link">
+              ← Head back to HomeTech.fm
+            </div>
+          </a>
         </section>
       )}
       {hasFailed && (
@@ -235,6 +240,11 @@ export function GameSession({ initialLevel = createLevel(1) }: GameSessionProps)
           <h2>{resultMessages.failure.title}</h2>
           <p>{resultMessages.failure.body}</p>
           <button type="button" onClick={resetGame}>{resultMessages.failure.action}</button>
+          <a href="/" rel="noopener noreferrer">
+            <div className="back-link">
+              ← Head back to HomeTech.fm
+            </div>
+          </a>
         </section>
       )}
     </main>
@@ -266,6 +276,13 @@ function App() {
           <span>CLOCK IN</span>
           <span aria-hidden="true">→</span>
         </button>
+        <a href="/" rel="noopener noreferrer">
+          <div className="back-link">
+            ← Head back to HomeTech.fm
+          </div>
+        </a>
+        <p className="fine-print">Inspired by <a href="https://www.reddit.com/r/electricians/comments/1vrpfw5/21_gang/" target="_blank" rel="noopener noreferrer">Reddit</a> • Powered by Hotdogs 🌭</p>
+
       </section>
     </main>
   )
